@@ -1,4 +1,4 @@
-# ALS-U Power Supply Controller (zPSC) Calibration Code & Data 
+# ALS-U Power Supply Controller (PSC) Calibration Code & Data 
 
 David Bergman (dbergman@bnl.gov)
 
