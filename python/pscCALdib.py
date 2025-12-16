@@ -17,9 +17,15 @@ print("2. 2CH-HSS-AR-QD-QF")
 print("3. 4CH-MSF-AR-Fast XY Corr")
 print("4. 4CH-MSS-AR Slow XY Corr")
 print("5. 4CH-MSS-AR-SD-SF")
+print("6. 4CH-MSS-AR-SK")
 print("")
 model = input("Select PSC Model: ")
-SN = input('Enter PSC chassis serial number: ')
+SN='0'
+while len(SN)!=4:
+	SN = input('Enter PSC chassis serial number: ')
+	if len(SN)!=4:
+		print("Serial number should be 4 digits")
+		print()
 
 now=datetime.datetime.now()
 formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -95,6 +101,20 @@ if model == '5':
 	OVC1_Flt_Threshold = [78, 148, 78, 148]
 	OVC2_Flt_Threshold = [78, 148, 78, 148]
 	OVV_Flt_Threshold = [120, 95, 120, 95]
+
+
+#6. 4CH-MSS-AR Skew Quad
+if model == '6':
+	#print("Calibrating PSC model 4CH-MSS-AR Slow XY Corr")
+	designation = "4CH-MSS-AR-SK_"
+	Ndcct = 1000.0
+	chan = ['1', '2', '3', '4']
+	Rb = [33.333333, 33.333333, 33.333333, 33.333333]
+	SF_Vout = [1.9, 1.9, 1.9, 1.9]
+	SF_Spare = [-5, -5, -5, -5]
+	OVC1_Flt_Threshold = [24.5, 24.5, 24.5, 24.5]
+	OVC2_Flt_Threshold = [24.5, 24.5, 24.5, 24.5]
+	OVV_Flt_Threshold = [18.5, 18.5, 18.5, 18.5]
 
 
 string1 = "Calibrating PSC model " + designation + "SN" + SN
@@ -181,7 +201,7 @@ def measure_testpoints(I, sp, j, verbose):
     while abs(err)>Ifs*2 and i<12 or i==0:  
         #if verbose:
         if(True):
-             print("adjustment %d" % i)
+             print("DAC adjustment %d" % i)
         #caput(psc+chan[j]+':SF:AmpsperSec-SP', R[i]) #set ramp rate
         #time.sleep(td[i])
         dac = sp - err/400*G
@@ -558,7 +578,7 @@ for x in ['1', '2', '3', '4']:
 	time.sleep(0.5)
 
 
-file_str1 = "/home/dbergman/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date + ".doc"
+file_str1 = "/home/pstester/PSC_Test_And_Cal/cal/cal_reports/psc_calibration_" + designation + SN + "_" + formatted_date + ".doc"
 os.system(f'cp "{file_str}" "{file_str1}"')
 
 
